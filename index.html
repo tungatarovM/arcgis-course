@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible"
+          content="ie=edge">
+    <script src="https://js.arcgis.com/4.14"></script>
+    <link rel="stylesheet"
+          href="https://js.arcgis.com/4.14/esri/css/main.css">
+    <title>
+        ArcGis
+    </title>
+</head>
+<body>
+<select style="margin-left: 200px" name="services"
+        id="services"></select>
+<script>
+    require(['esri/Map', 'esri/views/MapView', 'esri/request'], (Map, MapView, Request) => {
+        let map = new Map({ basemap: 'topo'});
+        const mapview = new MapView({container: 'mapview', map: map});
+
+        const url = 'http://server.arcgisonline.com/arcgis/rest/?f=pjson';
+        const options = {
+          responseType: 'json'
+        }
+        Request(url, options)
+          .then(function(res) {
+            const listOfServices = document.getElementById('services');
+            res.data.services.map((s) => {
+              const option = document.createElement('option');
+              option.textContent = s.name;
+              listOfServices.appendChild(option);
+            });
+          });
+    });
+</script>
+<div id="mapview" style="width:500px; height:500px"></div>
+<script>
+
+</script>
+</body>
+</html>
